@@ -1,0 +1,22 @@
+//Copyright (C)2014-2022 Gowin Semiconductor Corporation.
+//All rights reserved. 
+//File Title: Physical Constraints file
+//GOWIN Version: 1.9.8.10
+//Part Number: GW1N-LV1QN48C6/I5
+//Device: GW1N-1
+//Created Time: Mon 02 27 16:00:45 2023
+
+IO_LOC "serial_valid" 43;
+IO_PORT "serial_valid" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "serial_out" 42;
+IO_PORT "serial_out" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "serial_clk" 41;
+IO_PORT "serial_clk" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8 BANK_VCCIO=3.3;
+IO_LOC "clk_in_1" 39;
+IO_PORT "clk_in_1" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
+IO_LOC "clk_in_0" 38;
+IO_PORT "clk_in_0" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
+IO_LOC "rst" 40;
+IO_PORT "rst" IO_TYPE=LVCMOS33 PULL_MODE=NONE BANK_VCCIO=3.3;
+IO_LOC "sys_clk" 35;
+IO_PORT "sys_clk" PULL_MODE=UP BANK_VCCIO=1.8;

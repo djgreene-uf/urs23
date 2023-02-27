@@ -10,22 +10,20 @@ module phase_detector
       )    
     (
      // High frequency clock used to sample
-     input                               clk_sample,
-     input                               rst,
+     input logic                         clk_sample,
+     input logic                         rst,
 
      // Input clocks
-     input                               clk_in_0,
-     input                               clk_in_1,
+     input logic                         clk_in_0,
+     input logic                         clk_in_1,
 
-     output logic [phase_count_size-1:0] phase_err,
-     output logic                        phase_err_valid
+     output logic [phase_count_size-1:0] phase_tag_0,
+     output logic [phase_count_size-1:0] phase_tag_1,
+     output logic                        phase_tag_0_valid,
+     output logic                        phase_tag_1_valid
      );
 
     logic [phase_count_size-1:0] phase_count;
-
-    // Phase information
-    logic [phase_count_size-1:0] phase_clk_0;
-    logic [phase_count_size-1:0] phase_clk_1;
 
     // Input clock signals synchronized for metastability issues
     logic                        clk_0;
@@ -47,18 +45,6 @@ module phase_detector
          .d(clk_in_1),
          .q(clk_1));
 
-    // Delaying input clks
-    always_ff @(posedge clk_sample) begin
-        if (rst == 1'b1) begin
-            clk_0_d <= 1'b0;
-            clk_1_d <= 1'b0;
-        end
-        else begin
-            clk_0_d <= clk_0;
-            clk_1_d <= clk_1;
-        end
-    end
-
     // Free-running counter
     always_ff @(posedge clk_sample) begin
         if (rst == 1'b1) begin
@@ -72,23 +58,39 @@ module phase_detector
     // Phase detector
     always_ff @(posedge clk_sample) begin
         if (rst == 1'b1) begin
-            phase_clk_0 <= '0;
-            phase_clk_1 <= '0;
-            phase_err <= '0;
-            phase_err_valid <= 1'b0;
+            phase_tag_0 <= '0;
+            phase_tag_0_valid <= 1'b0;
+            clk_0_d <= 1'b0;
         end
         else begin
-            if (clk_0 == 1'b1 && clk_0_d == 1'b0)
-                phase_clk_0 <= phase_count;
-            if (clk_1 == 1'b1 && clk_1_d == 1'b0) begin
-                phase_clk_1 <= phase_count;
-                phase_err <= phase_count - phase_clk_0;
-                phase_err_valid <= 1'b1;
+            clk_0_d <= clk_0;
+            if (clk_0 == 1'b1 && clk_0_d == 1'b0) begin
+                phase_tag_0 <= phase_count;
+                phase_tag_0_valid <= 1'b1;
             end
             else begin
-                phase_err_valid <= 1'b0;
+                phase_tag_0_valid <= 1'b0;
             end
         end
     end
+
+    always_ff @(posedge clk_sample) begin
+        if (rst == 1'b1) begin
+            phase_tag_1 <= '0;
+            phase_tag_1_valid <= 1'b0;
+            clk_1_d <= 1'b0;
+        end
+        else begin
+            clk_1_d <= clk_1;
+            if (clk_1 == 1'b1 && clk_1_d == 1'b0) begin
+                phase_tag_1 <= phase_count;
+                phase_tag_1_valid <= 1'b1;
+            end
+            else begin
+                phase_tag_1_valid <= 1'b0;
+            end
+        end
+    end
+
 
 endmodule
