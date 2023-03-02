@@ -7,9 +7,11 @@
     <FileList>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/disciplined-vco/hdl/library/sync.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/disciplined-vco/hdl/phase_detector/phase_detector.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/disciplined-vco/hdl/phase_detector_start_stop/phase_detector_start_stop.sv" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll_div/gowin_rpll/gowin_rpll_div.v" type="file.verilog" enable="1"/>
-        <File path="src/top_level.sv" type="file.verilog" enable="1"/>
+        <File path="src/top_level.sv" type="file.verilog" enable="0"/>
+        <File path="src/top_level_start_stop.sv" type="file.verilog" enable="1"/>
         <File path="src/phase_detector.cst" type="file.cst" enable="1"/>
     </FileList>
 </Project>

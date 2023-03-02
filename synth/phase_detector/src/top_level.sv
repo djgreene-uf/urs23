@@ -88,6 +88,8 @@ module top_level
         if (rst == 1'b1) begin
             shift_reg <= '0;
             shift_reg_valid <= '0;
+            tag_0_read <= 1'b0;
+            tag_1_read <= 1'b0;
         end
         else begin
             tag_0_read <= 1'b0;
