@@ -15,24 +15,26 @@ module top_level_start_stop
      output logic serial_valid
      );
 
-    localparam phase_count_size = 16;
+    localparam serial_size = 16;
+    localparam phase_count_size = 12;
+    localparam clock_count_size = serial_size - phase_count_size;
 
     logic      clk_sample_120;
 
-    logic [phase_count_size-1:0] phase_tag;
-    logic                        phase_tag_valid;
+    logic [serial_size-1:0] phase_tag;
+    logic                   phase_tag_valid;
 
-    logic                        clk_shift_reg;
-    logic [phase_count_size-1:0] shift_reg;
-    logic [phase_count_size-1:0] shift_reg_valid;
-    logic                        shift_reg_ready;
+    logic                   clk_shift_reg;
+    logic [serial_size-1:0] shift_reg;
+    logic [serial_size-1:0] shift_reg_valid;
+    logic                   shift_reg_ready;
 
-    logic                        tag_new;
-    logic                        tag_read;
+    logic                   tag_new;
+    logic                   tag_read;
 
-    assign shift_reg_ready = shift_reg_valid[phase_count_size-1];
+    assign shift_reg_ready = shift_reg_valid[serial_size-1];
     assign serial_clk = clk_shift_reg & shift_reg_ready;
-    assign serial_out = shift_reg[phase_count_size-1];
+    assign serial_out = shift_reg[serial_size-1];
     assign serial_valid = ~shift_reg_ready;
 
     Gowin_rPLL_Div pll
@@ -41,8 +43,8 @@ module top_level_start_stop
          .clkoutd(clk_shift_reg));
 
     phase_detector_start_stop
-        #(
-          .phase_count_size(phase_count_size))
+        #(.phase_count_size(phase_count_size),
+          .clk_0_count_size(clock_count_size))
     PhaseDetector
         (.clk_sample(clk_sample_120),
          .rst(rst),
@@ -80,8 +82,8 @@ module top_level_start_stop
                 tag_read <= 1'b1;
             end
             else begin
-                shift_reg <= {shift_reg[phase_count_size-2:0], 1'b0};
-                shift_reg_valid <= {shift_reg_valid[phase_count_size-2:0], 1'b0};
+                shift_reg <= {shift_reg[serial_size-2:0], 1'b0};
+                shift_reg_valid <= {shift_reg_valid[serial_size-2:0], 1'b0};
             end
         end
     end

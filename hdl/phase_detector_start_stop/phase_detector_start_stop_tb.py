@@ -9,7 +9,7 @@ async def reset_dut(dut):
     await FallingEdge(dut.clk_sample)
     dut.rst.value = 0
     await FallingEdge(dut.clk_sample)
-    dut.log.info("Resetting")
+    dut._log.info("Resetting")
 
 @cocotb.coroutine
 async def clock_in_gen(period, duty, delay, clk):
@@ -18,7 +18,8 @@ async def clock_in_gen(period, duty, delay, clk):
     high = Timer(high_time, units="ns")
     low = Timer(low_time, units="ns")
     period = high_time + low_time
-    await Timer(delay, units="ns")
+    if (delay != 0):
+        await Timer(delay, units="ns")
     while True:
         clk.value = 1
         await high
@@ -44,7 +45,7 @@ async def basic_test(dut):
 
     clk_in_1_freq = 10
     clk_in_1_period = 1000/clk_in_1_freq
-    phase_1 = 0
+    phase_1 = 10
 
     cocotb.start_soon(clock_in_gen(clk_in_0_period, 0.5, phase_0, dut.clk_in_0))
     cocotb.start_soon(clock_in_gen(clk_in_1_period, 0.5, phase_1, dut.clk_in_1))
@@ -54,7 +55,10 @@ async def basic_test(dut):
 
     for i in range(10):
         await RisingEdge(dut.phase_tag_valid)
-        phase_err_count = dut.phase_tag.value
+        phase_tag = dut.phase_tag.value
+        clk_0_count = (phase_tag >> 12) & 0x000f
+        phase_err_count = phase_tag & (0x0fff)
+        dut._log.info("Received CLK 0 count: " + str(clk_0_count))
         dut._log.info("Received phase error count: " + str(phase_err_count))
 
         phase_err = phase_err_count*1000/clock_sample_freq
