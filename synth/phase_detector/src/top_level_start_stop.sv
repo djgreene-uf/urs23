@@ -15,72 +15,69 @@ module top_level_start_stop
      output logic serial_valid
      );
 
-    localparam serial_size = 16;
-    localparam phase_count_size = 12;
+    localparam serial_size = 8;
+    localparam phase_count_size = 5;
     localparam clock_count_size = serial_size - phase_count_size;
 
     logic      clk_sample_120;
 
-    logic [serial_size-1:0] phase_tag;
-    logic                   phase_tag_valid;
-
+    // Shift register signals
     logic                   clk_shift_reg;
     logic [serial_size-1:0] shift_reg;
     logic [serial_size-1:0] shift_reg_valid;
-    logic                   shift_reg_ready;
+    logic                   shift_reg_empty;
 
-    logic                   tag_new;
-    logic                   tag_read;
+    // FIFO signals
+    logic                   empty;
+    logic [serial_size-1:0] fifo_out;
+    logic                   rd_en;
+    logic                   fifo_out_valid;
 
-    assign shift_reg_ready = shift_reg_valid[serial_size-1];
-    assign serial_clk = clk_shift_reg & shift_reg_ready;
-    assign serial_out = shift_reg[serial_size-1];
-    assign serial_valid = ~shift_reg_ready;
+    // FIFO Read Logic
+    always_comb begin
+        shift_reg_empty = ~shift_reg_valid[serial_size-1];
+        rd_en = shift_reg_empty & ~empty;
+    end
+    
+    // Assigning outputs
+    always_comb begin
+        serial_clk = clk_shift_reg & ~shift_reg_empty;
+        serial_out = shift_reg[serial_size-1];
+        serial_valid = ~shift_reg_empty;
+    end
 
     Gowin_rPLL_Div pll
         (.clkin(sys_clk),
          .clkout(clk_sample_120),
          .clkoutd(clk_shift_reg));
 
-    phase_detector_start_stop
-        #(.phase_count_size(phase_count_size),
-          .clk_0_count_size(clock_count_size))
-    PhaseDetector
+    phase_detector_fifo_wrapper PhaseDetectorAndFIFO
         (.clk_sample(clk_sample_120),
          .rst(rst),
          .clk_in_0(clk_in_0),
          .clk_in_1(clk_in_1),
-         .phase_tag(phase_tag),
-         .phase_tag_valid(phase_tag_valid));
-
-    always_ff @(posedge clk_sample_120) begin
-        if (rst == 1'b1) begin
-            tag_new <= 1'b0;
-        end
-        else begin
-            if (phase_tag_valid == 1'b1 && tag_new == 1'b0) begin
-                tag_new <= 1'b1;
-            end
-
-            if (tag_read == 1'b1) begin
-                tag_new <= 1'b0;
-            end
-        end
-    end
+         .RdEn(rd_en),
+         .RdClk(clk_shift_reg),
+         .data_out(fifo_out),
+         .Empty(empty),
+         .Almost_Empty());
 
     always_ff @(posedge clk_shift_reg) begin
         if (rst == 1'b1) begin
             shift_reg <= '0;
             shift_reg_valid <= '0;
-            tag_read <= 1'b0;
+            fifo_out_valid <= 1'b0;
         end
         else begin
-            tag_read <= 1'b0;
-            if (tag_new == 1'b1 && shift_reg_ready == 1'b0) begin
-                shift_reg <= phase_tag;
+            // This FIFO is not first word fall through so valid is delayed by one cycle
+            fifo_out_valid <= rd_en;
+
+            // Load shift reg if reading from FIFO
+            if (fifo_out_valid) begin
+                shift_reg <= fifo_out;
                 shift_reg_valid <= '1;
-                tag_read <= 1'b1;
             end
+            // Otherwise shift out contents            
             else begin
                 shift_reg <= {shift_reg[serial_size-2:0], 1'b0};
                 shift_reg_valid <= {shift_reg_valid[serial_size-2:0], 1'b0};
