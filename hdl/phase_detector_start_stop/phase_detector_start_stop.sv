@@ -47,6 +47,10 @@ module phase_detector_start_stop
     logic clk_0_edge;
     logic clk_1_edge;
 
+    // Pipeling for edge
+    logic clk_0_edge_d;
+    logic clk_1_edge_d;
+
     assign clk_0_edge = (clk_0 == 1'b1) & (clk_0_d == 1'b0);
     assign clk_1_edge = (clk_1 == 1'b1) & (clk_1_d == 1'b0);
 
@@ -61,10 +65,14 @@ module phase_detector_start_stop
         if (rst == 1'b1) begin
             clk_0_d <= 1'b0;
             clk_1_d <= 1'b0;
+            clk_0_edge_d <= 1'b0;
+            clk_1_edge_d <= 1'b0;
         end
         else begin
             clk_0_d <= clk_0;
-            clk_1_d <= clk_1;          
+            clk_1_d <= clk_1;
+            clk_0_edge_d <= clk_0_edge;
+            clk_1_edge_d <= clk_1_edge;
         end
     end
 
@@ -81,9 +89,9 @@ module phase_detector_start_stop
             phase_tag_valid <= 1'b0;
             case (state_r)
                 S_WAIT_EDGE0: begin
-                    if (clk_0_edge == 1'b1) begin
+                    if (clk_0_edge_d == 1'b1) begin
                         clk_0_count <= clk_0_count + clk_0_count_size'(1);
-                        if (clk_1_edge == 1'b1) begin
+                        if (clk_1_edge_d == 1'b1) begin
                             phase_tag_valid <= 1'b1;
                             phase_tag <= {clk_0_count, phase_count};
                         end
@@ -94,7 +102,7 @@ module phase_detector_start_stop
                     end
                 end
                 S_GOT_EDGE0: begin
-                    if (clk_1_edge == 1'b1) begin
+                    if (clk_1_edge_d == 1'b1) begin
                         phase_count <= '0;
                         phase_tag <= {clk_0_count, phase_count};
                         phase_tag_valid <= 1'b1;

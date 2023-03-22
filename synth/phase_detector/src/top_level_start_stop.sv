@@ -15,11 +15,11 @@ module top_level_start_stop
      output logic serial_valid
      );
 
-    localparam serial_size = 8;
-    localparam phase_count_size = 5;
-    localparam clock_count_size = serial_size - phase_count_size;
+    localparam int serial_size = 8;
+    localparam int phase_count_size = 5;
+    localparam int clock_count_size = serial_size - phase_count_size;
 
-    logic      clk_sample_120;
+    logic      clk_sample;
 
     // Shift register signals
     logic                   clk_shift_reg;
@@ -31,6 +31,7 @@ module top_level_start_stop
     logic                   empty;
     logic [serial_size-1:0] fifo_out;
     logic                   rd_en;
+    logic                   fifo_out_valid_d;
     logic                   fifo_out_valid;
 
     // FIFO Read Logic
@@ -46,13 +47,13 @@ module top_level_start_stop
         serial_valid = ~shift_reg_empty;
     end
 
-    Gowin_rPLL_Div pll
+    Gowin_rPLL_240 pll
         (.clkin(sys_clk),
-         .clkout(clk_sample_120),
+         .clkout(clk_sample),
          .clkoutd(clk_shift_reg));
 
     phase_detector_fifo_wrapper PhaseDetectorAndFIFO
-        (.clk_sample(clk_sample_120),
+        (.clk_sample(clk_sample),
          .rst(rst),
          .clk_in_0(clk_in_0),
          .clk_in_1(clk_in_1),
@@ -67,10 +68,12 @@ module top_level_start_stop
             shift_reg <= '0;
             shift_reg_valid <= '0;
             fifo_out_valid <= 1'b0;
+            fifo_out_valid_d <= 1'b0;
         end
         else begin
             // This FIFO is not first word fall through so valid is delayed by one cycle
-            fifo_out_valid <= rd_en;
+            fifo_out_valid_d <= rd_en;
+            fifo_out_valid <= fifo_out_valid_d;
 
             // Load shift reg if reading from FIFO
             if (fifo_out_valid) begin

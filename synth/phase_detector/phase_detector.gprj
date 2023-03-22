@@ -8,12 +8,25 @@
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/sync.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/phase_detector/phase_detector.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/phase_detector_start_stop/phase_detector_start_stop.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/spi/spi.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/spi/spi_go.sv" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs/fifo_hs_top.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs_2/fifo_hs_top_2.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs_2_bram/fifo_hs_2_bram.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs_4/fifo_hs_top_4.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_reg_top/fifo_reg_top.v" type="file.verilog" enable="1"/>
         <File path="src/fifo_top/fifo_bram_top.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_rpll_230/gowin_rpll_230.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_rpll_240/gowin_rpll_240.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_rpll_250/gowin_rpll_250.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll_div/gowin_rpll/gowin_rpll_div.v" type="file.verilog" enable="1"/>
         <File path="src/phase_detector_fifo_wrapper.sv" type="file.verilog" enable="1"/>
         <File path="src/top_level.sv" type="file.verilog" enable="0"/>
-        <File path="src/top_level_start_stop.sv" type="file.verilog" enable="1"/>
-        <File path="src/phase_detector.cst" type="file.cst" enable="1"/>
+        <File path="src/top_level_start_stop.sv" type="file.verilog" enable="0"/>
+        <File path="src/top_level_start_stop_parallel.sv" type="file.verilog" enable="1"/>
+        <File path="src/phase_detector.cst" type="file.cst" enable="0"/>
+        <File path="src/phase_detector_parallel.cst" type="file.cst" enable="1"/>
+        <File path="src/phase_detector.sdc" type="file.sdc" enable="1"/>
     </FileList>
 </Project>

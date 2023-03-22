@@ -29,6 +29,7 @@ module phase_detector_fifo_wrapper
     logic       wr_en;
 
     assign wr_en = phase_tag_valid & ~full;
+    assign Almost_Empty = 1'b0;
 
     phase_detector_start_stop
         #(.phase_count_size(5),
@@ -41,14 +42,14 @@ module phase_detector_fifo_wrapper
          .phase_tag(phase_tag),
          .phase_tag_valid(phase_tag_valid));
 
-    fifo_bram_top phase_fifo
+    fifo_hs_2_bram phase_fifo
         (.Data(phase_tag),
          .WrClk(clk_sample),
          .RdClk(RdClk),
          .WrEn(wr_en),
          .RdEn(RdEn),
-         .Almost_Empty(Almost_Empty),
-         .Almost_Full(),
+//         .Almost_Empty(Almost_Empty),
+//         .Almost_Full(),
          .Q(data_out),
          .Empty(Empty),
          .Full(full));
