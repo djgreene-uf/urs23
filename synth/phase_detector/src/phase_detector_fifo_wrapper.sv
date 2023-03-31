@@ -20,14 +20,17 @@ module phase_detector_fifo_wrapper
      output logic       Almost_Empty);
 
     // Phase detector signals
-    logic [7:0] phase_tag;
+    logic [4:0] phase_tag;
+    logic [2:0] phase_start_count;
     logic       phase_tag_valid;
 
     // FIFO signals
     logic       full;
+    logic [7:0] fifo_in;
     logic [7:0] fifo_out;
     logic       wr_en;
 
+    assign fifo_in = {phase_start_count, phase_tag};
     assign wr_en = phase_tag_valid & ~full;
     assign Almost_Empty = 1'b0;
 
@@ -40,10 +43,11 @@ module phase_detector_fifo_wrapper
          .clk_in_0(clk_in_0),
          .clk_in_1(clk_in_1),
          .phase_tag(phase_tag),
+         .start_count(phase_start_count),
          .phase_tag_valid(phase_tag_valid));
 
     fifo_hs_2_bram phase_fifo
-        (.Data(phase_tag),
+        (.Data(fifo_in),
          .WrClk(clk_sample),
          .RdClk(RdClk),
          .WrEn(wr_en),

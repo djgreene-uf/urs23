@@ -5,20 +5,21 @@
 
 module phase_detector_start_stop
     #(
-       parameter int phase_count_size = 12,
-       parameter int clk_0_count_size = 4
+       parameter int phase_count_size = 5,
+       parameter int clk_0_count_size = 3
       )    
     (
      // High frequency clock used to sample
-     input logic                                              clk_sample,
-     input logic                                              rst,
+     input logic                         clk_sample,
+     input logic                         rst,
 
      // Input clocks
-     input logic                                              clk_in_0,
-     input logic                                              clk_in_1,
+     input logic                         clk_in_0,
+     input logic                         clk_in_1,
 
-     output logic [(phase_count_size + clk_0_count_size)-1:0] phase_tag,
-     output logic                                             phase_tag_valid
+     output logic [phase_count_size-1:0] phase_tag,
+     output logic [clk_0_count_size-1:0] start_count,
+     output logic                        phase_tag_valid
      );
 
     localparam int phase_tag_size = phase_count_size + clk_0_count_size;
@@ -90,10 +91,13 @@ module phase_detector_start_stop
             case (state_r)
                 S_WAIT_EDGE0: begin
                     if (clk_0_edge_d == 1'b1) begin
-                        clk_0_count <= clk_0_count + clk_0_count_size'(1);
+                        // There is currently different behavior if they are on the same edge and not)
+                        // clk_0_count <= clk_0_count + clk_0_count_size'(1);
                         if (clk_1_edge_d == 1'b1) begin
                             phase_tag_valid <= 1'b1;
-                            phase_tag <= {clk_0_count, phase_count};
+                            phase_tag <= phase_count;
+                            start_count <= clk_0_count;
+                            clk_0_count <= clk_0_count + clk_0_count_size'(1);
                         end
                         else begin
                             state_r <= S_GOT_EDGE0;
@@ -104,7 +108,9 @@ module phase_detector_start_stop
                 S_GOT_EDGE0: begin
                     if (clk_1_edge_d == 1'b1) begin
                         phase_count <= '0;
-                        phase_tag <= {clk_0_count, phase_count};
+                        phase_tag <= phase_count;
+                        start_count<= clk_0_count;
+                        clk_0_count <= clk_0_count + clk_0_count_size'(1);
                         phase_tag_valid <= 1'b1;
                         state_r <= S_WAIT_EDGE0;
                     end

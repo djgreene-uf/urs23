@@ -29,7 +29,7 @@ async def clock_in_gen(period, duty, delay, clk):
 @cocotb.test()
 async def basic_test(dut):
     # Sample frequency in MHz
-    clock_sample_freq = 160
+    clock_sample_freq = 250
     clock_sample_period = 1000/clock_sample_freq
     clock_sample = Clock(dut.clk_sample, clock_sample_period, units="ns")
     # clock_sample = Clock(dut.clk_sample, 7.6923, units="ns")
@@ -56,8 +56,8 @@ async def basic_test(dut):
     for i in range(10):
         await RisingEdge(dut.phase_tag_valid)
         phase_tag = dut.phase_tag.value
-        clk_0_count = (phase_tag >> 12) & 0x000f
-        phase_err_count = phase_tag & (0x0fff)
+        clk_0_count = (phase_tag >> 5) & 0x000f
+        phase_err_count = phase_tag & (0x001f)
         dut._log.info("Received CLK 0 count: " + str(clk_0_count))
         dut._log.info("Received phase error count: " + str(phase_err_count))
 
