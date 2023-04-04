@@ -3,13 +3,14 @@
 `define     SHIFT_DIRECTION     0   // 0: MSB->LSB , 1: LSB -> MSB
 `define     CLOCK_PHASE         0   
 `define     CLOCK_POLARITY      0
-`define     DATA_LENGTH         8
 
-module spi_go (
+module spi_go
+    #(parameter int DATA_LENGTH = 8)
+    (
     input logic RST_N,
     input logic CLK,
     input logic GO,
-    input logic [`DATA_LENGTH-1:0] DATA,
+    input logic [DATA_LENGTH-1:0] DATA,
     output logic MCLK,
     output logic SS_N, 
     output logic MISO
@@ -23,8 +24,8 @@ module spi_go (
    state_t state_r;
 
     logic mclk_r, ss_r;
-    logic [`DATA_LENGTH-1:0]    tx_cnt_r;
-    logic [`DATA_LENGTH-1:0]    miso_shift_r;
+    logic [DATA_LENGTH-1:0]    tx_cnt_r;
+    logic [DATA_LENGTH-1:0]    miso_shift_r;
 
 /*******************************************************************
 *transmit data 
@@ -57,7 +58,7 @@ always_ff @(negedge RST_N or posedge CLK) begin
                 mclk_r <= ~mclk_r;
 
                 if (mclk_r) begin
-                    if (tx_cnt_r >= `DATA_LENGTH - 1) state_r <= DONE;
+                    if (tx_cnt_r >= DATA_LENGTH - 1) state_r <= DONE;
                     else tx_cnt_r <= tx_cnt_r + 1'b1;  
                 end
             end
@@ -77,6 +78,6 @@ end
 
 assign SS_N = ss_r;
 assign MCLK = mclk_r;
-assign MISO = miso_shift_r[7-tx_cnt_r]; //LSB ->MSB
+assign MISO = miso_shift_r[(DATA_LENGTH-1)-tx_cnt_r]; //LSB ->MSB
 
 endmodule

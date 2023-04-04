@@ -30,7 +30,7 @@ module phase_detector_start_stop
 
     sync sync_clk_0
         (.clk(clk_sample),
-         .rst(),
+         .rst(), // Wow this actually matters for timing
          .d(clk_in_0),
          .q(clk_0));
 
@@ -91,11 +91,11 @@ module phase_detector_start_stop
             case (state_r)
                 S_WAIT_EDGE0: begin
                     if (clk_0_edge_d == 1'b1) begin
-                        // There is currently different behavior if they are on the same edge and not)
-                        // clk_0_count <= clk_0_count + clk_0_count_size'(1);
+                        // clk_0_count <= clk_0_count + clk_0_count_size'(1); This leads to different behavior if start and stop are on same edge
                         if (clk_1_edge_d == 1'b1) begin
                             phase_tag_valid <= 1'b1;
                             phase_tag <= phase_count;
+                            phase_count <= '0; // Simplifies timing
                             start_count <= clk_0_count;
                             clk_0_count <= clk_0_count + clk_0_count_size'(1);
                         end

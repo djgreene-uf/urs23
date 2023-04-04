@@ -1,0 +1,36 @@
+-series GW1N
+-device GW1N-1
+-device_version 
+-package QFN48
+-part_number GW1N-LV1QN48C6/I5
+
+
+-mod_name gowin_rpll_250_phase_shift
+-file_name gowin_rpll_250_phase_shift
+-path C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/synth/phase_detector_shifted_clocks/src/gowin_rpll_250_phase_shift/
+-type PLL
+-rPll true
+-file_type vlg
+-dev_type GW1N-1
+-dyn_idiv_sel false
+-idiv_sel 5
+-dyn_fbdiv_sel false
+-fbdiv_sel 52
+-dyn_odiv_sel false
+-odiv_sel 2
+-dyn_sdiv_sel 124
+-dyn_da_en false
+-rst_sig false
+-rst_sig_p false
+-fclkin 24
+-clkfb_sel 0
+-en_lock false
+-clkout_bypass false
+-en_clkoutp true
+-clkoutp_bypass false
+-psda_sel 4
+-dutyda_sel 8
+-en_clkoutd true
+-clkoutd_bypass false
+-clkoutd_src CLKOUT
+-en_clkoutd3 false

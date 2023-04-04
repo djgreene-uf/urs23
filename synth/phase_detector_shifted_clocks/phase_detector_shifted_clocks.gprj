@@ -1,0 +1,29 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW1N-1" pn="GW1N-LV1QN48C6/I5">gw1n1-004</Device>
+    <FileList>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/delay.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/delay_reg.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/dff.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/dff_sync_rst.sv" type="file.verilog" enable="0"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/level_to_pulse.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/pulse_extender.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/register.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/sync.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/phase_detector_combined/phase_detector_combined.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/phase_detector_start_stop/phase_detector_start_stop.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/shifted_clock_sampling/shifted_clock_sampling.sv" type="file.verilog" enable="1"/>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/spi/spi_go.sv" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs_bram_2d_16w/fifo_hs_bram_2d_16w.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_rpll_240_phase_shift/gowin_rpll_240_phase_shift.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_rpll_250_phase_shift/gowin_rpll_250_phase_shift.v" type="file.verilog" enable="0"/>
+        <File path="src/gowin_rpll_260_phase_shift/gowin_rpll_260_phase_shift.v" type="file.verilog" enable="0"/>
+        <File path="src/phase_detector_fifo_wrapper.sv" type="file.verilog" enable="1"/>
+        <File path="src/top_level_shifted_clocks.sv" type="file.verilog" enable="1"/>
+        <File path="src/phase_detector.cst" type="file.cst" enable="1"/>
+        <File path="src/timing.sdc" type="file.sdc" enable="1"/>
+    </FileList>
+</Project>
