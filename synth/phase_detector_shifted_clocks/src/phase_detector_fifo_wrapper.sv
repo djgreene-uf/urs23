@@ -4,6 +4,8 @@
 // FIFO is instantiated to 8 bits.
 
 module phase_detector_fifo_wrapper
+    #(parameter int phase_count_size = 6,
+      parameter int clk_0_count_size = 6)
     (
      // Phase detector inputs
      input logic         clk_0,
@@ -36,8 +38,8 @@ module phase_detector_fifo_wrapper
     assign wr_en = phase_tag_valid & ~full;
 
     phase_detector_combined
-        #(.phase_count_size(6),
-          .clk_0_count_size(6))
+        #(.phase_count_size(phase_count_size),
+          .clk_0_count_size(clk_0_count_size))
     PhaseDetector
         (.clk_0(clk_0),
          .clk_90(clk_90),

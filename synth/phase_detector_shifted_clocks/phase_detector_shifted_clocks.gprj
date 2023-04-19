@@ -5,6 +5,7 @@
     <Version>5</Version>
     <Device name="GW1N-1" pn="GW1N-LV1QN48C6/I5">gw1n1-004</Device>
     <FileList>
+        <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/clk_div.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/delay.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/delay_reg.sv" type="file.verilog" enable="1"/>
         <File path="C:/Users/ianyu/Documents/UF_Semesters/2023_Spring/EEL4924/urs23/hdl/library/dff.sv" type="file.verilog" enable="1"/>
@@ -22,7 +23,8 @@
         <File path="src/gowin_rpll_250_phase_shift/gowin_rpll_250_phase_shift.v" type="file.verilog" enable="0"/>
         <File path="src/gowin_rpll_260_phase_shift/gowin_rpll_260_phase_shift.v" type="file.verilog" enable="0"/>
         <File path="src/phase_detector_fifo_wrapper.sv" type="file.verilog" enable="1"/>
-        <File path="src/top_level_shifted_clocks.sv" type="file.verilog" enable="1"/>
+        <File path="src/top_level_shifted_clocks.sv" type="file.verilog" enable="0"/>
+        <File path="src/top_level_shifted_clocks_div.sv" type="file.verilog" enable="1"/>
         <File path="src/phase_detector.cst" type="file.cst" enable="1"/>
         <File path="src/timing.sdc" type="file.sdc" enable="1"/>
     </FileList>

@@ -2,8 +2,8 @@
 //All rights reserved.
 //File Title: Timing Constraints file
 //GOWIN Version: 1.9.8.10 
-//Created Time: 2023-04-02 19:36:20
-
+//Created Time: 2023-04-18 20:50:02
+create_clock -name clk_10mhz -period 100 -waveform {0 50} [get_ports {clk_in_1}]
 //set_multicycle_path -from [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/dff_hit_0/delay_extend/q_s0}] -to [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/sync_hit_0/q_s0}]  -setup -end 2
 set_multicycle_path -from [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/dff_hit_180/delay_extend/q_s1}] -to [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/sync_hit_180/q_s0}]  -setup -end 2
 set_multicycle_path -from [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/dff_hit_180/delay_extend/q_s1}] -to [get_regs {PhaseDetectorAndFIFO/PhaseDetector/start_sample/sync_hit_180/q_s0}]  -hold -end 1
