@@ -53,9 +53,9 @@ module top_level_shifted_clocks_div
 
     // LEDS
     always_comb begin
-        LED_G = 1'b1;
-        LED_B = 1'b1;
-        LED_R = clk_in_0;
+        LED_G = clk_in_0;
+        LED_B = 1'b0;
+        LED_R = 1'b1;
     end
 
     // Clocks
@@ -75,7 +75,9 @@ module top_level_shifted_clocks_div
         phase_out_valid = parallel_reg_valid;
     end
 
-    clk_div clk_stop_div
+    clk_div
+        #(.DIV_RATIO(31))
+    clk_stop_div
         (.clk(clk_in_1),
          .rst(rst),
          .clk_out(clk_in_1_div));
@@ -87,8 +89,8 @@ module top_level_shifted_clocks_div
          .clkoutp(clk_90));
 
     phase_detector_fifo_wrapper
-        #(.phase_count_size(2),
-          .clk_0_count_size(10))
+        #(.phase_count_size(10),
+          .clk_0_count_size(2))
     PhaseDetectorAndFIFO
         (.clk_0(clk_0),
          .clk_90(clk_90),

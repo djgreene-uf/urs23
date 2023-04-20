@@ -5,26 +5,37 @@ module clk_div
      input logic  rst,
      output logic clk_out);
 
-    localparam int count_size = $clog2(DIV_RATIO);
-    logic [count_size-1:0] count;
+    logic regs [DIV_RATIO];
 
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst == 1'b1) begin
-            clk_out <= 1'b0;
-            count <= '0;
+    if (DIV_RATIO == 1) begin
+        assign clk_out = clk;
+    end
+    else if (DIV_RATIO > 1) begin
+
+        dff
+            #(.RESET_VAL(1))
+        dff_RST_1
+            (.clk(clk),
+             .rst(rst),
+             .en(1'b1),
+             .d(regs[DIV_RATIO-1]),
+             .q(regs[0]));
+
+        genvar i;
+        for (i = 1; i < DIV_RATIO; i++) begin : gen_dff_array
+            dff
+                #(.RESET_VAL(0))
+            dff_array
+                (.clk(clk),
+                 .rst(rst),
+                 .en(1'b1),
+                 .d(regs[i-1]),
+                 .q(regs[i]));
+
         end
-        else begin
-            count <= count + count_size'(1);
-            if (count == DIV_RATIO-1) begin
-                count <= '0;
-            end
-            if (count == count_size'(0)) begin
-                clk_out <= 1'b1;
-            end
-            else begin
-                clk_out <= 1'b0;
-            end
-        end
-    end       
+
+        assign clk_out = regs[0];
+
+    end
 
 endmodule

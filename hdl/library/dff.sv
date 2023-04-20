@@ -1,4 +1,5 @@
 module dff
+    #(parameter int RESET_VAL = 0)
     (input logic clk,
      input logic rst,
      input logic en,
@@ -8,7 +9,7 @@ module dff
 
     always_ff @(posedge clk or posedge rst) begin
         if (rst == 1'b1) begin
-            q <= 1'b0;
+            q <= RESET_VAL;
         end
         else if (en == 1'b1) begin
             q <= d;
