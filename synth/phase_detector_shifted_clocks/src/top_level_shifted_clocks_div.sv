@@ -76,7 +76,7 @@ module top_level_shifted_clocks_div
     end
 
     clk_div
-        #(.DIV_RATIO(31))
+        #(.DIV_RATIO(32))
     clk_stop_div
         (.clk(clk_in_1),
          .rst(rst),
